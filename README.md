@@ -2,6 +2,12 @@
 
 A set of utilities that makes using ZeroC ICE with JS easier.
 
+## Installation
+
+```
+npm install --save ice-utils
+```
+
 ## API
 
 ### toPromise(icePromise: Ice.Promise): Promise
