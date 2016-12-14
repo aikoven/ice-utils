@@ -1,4 +1,4 @@
-# Ice Utils
+# Ice Utils [![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
 
 A set of utilities that makes using ZeroC ICE with JS easier.
 
@@ -63,3 +63,9 @@ class MyServant extends MySlices.MyServant {
   }
 }
 ```
+
+
+[npm-image]: https://badge.fury.io/js/ice-utils.svg
+[npm-url]: https://badge.fury.io/js/ice-utils
+[travis-image]: https://travis-ci.org/aikoven/ice-utils.svg?branch=master
+[travis-url]: https://travis-ci.org/aikoven/ice-utils
