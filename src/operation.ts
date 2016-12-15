@@ -93,20 +93,21 @@ export default function operation(name?: string) {
     const servantOpTable = (prototype.constructor as any).__ops;
 
     // override operation table
-    (prototype.constructor as any).__ops = new OpTable(Object.assign(
+    const newOpTable = new OpTable(Object.assign(
       {}, servantOpTable && servantOpTable.raw, {
         [opName]: opConfig,
       })
     );
+    (prototype.constructor as any).__ops = newOpTable;
 
     // add AMD method
     Object.assign(prototype, {
-      [`${key}_async`](cb: Ice.UpcallRest, ...args: any[]) {
+      [`${opName}_async`](cb: Ice.UpcallRest, ...args: any[]) {
         Promise.resolve(descriptor.value.call(this, ...args)).then(
           res => {
             if (res === undefined) {
               cb.ice_response();
-            } else if (Array.isArray(res)) {
+            } else if (newOpTable.find(opName).outParams.length > 0) {
               cb.ice_response(...res);
             } else {
               cb.ice_response(res);
