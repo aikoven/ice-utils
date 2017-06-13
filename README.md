@@ -70,7 +70,7 @@ class MyServant extends MySlices.MyServant {
 }
 ```
 
-### handleDispatchException(handler: IceErrorHandler): RemoveIceErrorListener
+### handleDispatchException(handler: IceErrorHandler): RemoveIceErrorHandler
 
 Add a hook for handling uncaught dispatch errors. 
 [`Ice.Warn.Dispatch`](https://doc.zeroc.com/pages/viewpage.action?pageId=16716656#Ice.Warn.*-Ice.Warn.Dispatch) 
