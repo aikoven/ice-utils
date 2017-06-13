@@ -70,6 +70,25 @@ class MyServant extends MySlices.MyServant {
 }
 ```
 
+### handleDispatchException(handler: IceErrorHandler): RemoveIceErrorListener
+
+Hook for handling uncaught ice errors if `Ice.Warn.Dispatch=1`.
+
+Default Ice error handling behavior are disabled if custom handler are assigned.
+
+**Example**
+```js
+const removeHandler = handleDispatchException((error, context, current) => {
+  const {requestId, operation, id} = current;
+  console.error(error, {
+    ...context,
+    iceRequestId: requestId,
+    iceOperation: operation,
+    iceIdentity: Ice.identityToString(id)
+  });
+});
+```
+
 
 [npm-image]: https://badge.fury.io/js/ice-utils.svg
 [npm-url]: https://badge.fury.io/js/ice-utils
