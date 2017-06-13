@@ -72,13 +72,13 @@ class MyServant extends MySlices.MyServant {
 
 ### handleDispatchException(handler: IceErrorHandler): RemoveIceErrorListener
 
-Hook for handling uncaught ice errors.
+Hook for handling uncaught ice errors if `Ice.Warn.Dispatch=1`.
 
 Default Ice error handling behavior are disabled if custom handler are assigned.
 
 **Example**
 ```js
-const removeHandler = addIceErrorHandler((error, context, current) => {
+const removeHandler = handleDispatchException((error, context, current) => {
   const {requestId, operation, id} = current;
   console.error(error, {
     ...context,
