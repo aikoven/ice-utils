@@ -1,15 +1,15 @@
 import {Ice} from "ice";
 
-export interface IceErrorContext {
+export interface ErrorContext {
   remoteHost?: string;
   remotePort?: string;
 }
 
 export interface IceErrorHandler {
-  (err: any, context: IceErrorContext, current: Ice.Current): void;
+  (err: any, context: ErrorContext, current: Ice.Current): void;
 }
 
-export interface RemoveIceErrorHandler {
+export interface RemoveIceErrorListener {
   (): void;
 }
 
@@ -22,7 +22,7 @@ const iceWarn: (error: any) => void =
   if (!iceErrorHandlers)
     return iceWarn.call(this, error);
 
-  const context: IceErrorContext = {};
+  const context: ErrorContext = {};
   if (this._connection !== null) {
     try {
       const connInfo = this._connection.getInfo();
@@ -39,7 +39,7 @@ const iceWarn: (error: any) => void =
     handler(error, context, this._current);
 };
 
-export default function (handler: IceErrorHandler): RemoveIceErrorHandler {
+export default function (handler: IceErrorHandler): RemoveIceErrorListener {
   iceErrorHandlers.push(handler);
   return () => {
     const index = iceErrorHandlers.indexOf(handler);
