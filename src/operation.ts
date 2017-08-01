@@ -69,18 +69,20 @@ export default function operation(name?: string) {
     const opName = name || key;
 
     // get generated class prototype
-    while (!prototype.hasOwnProperty('__dispatch')) {
-      prototype = Object.getPrototypeOf(prototype);
+    let icePrototype = prototype;
+    while (!icePrototype.hasOwnProperty('__dispatch')) {
+      icePrototype = Object.getPrototypeOf(icePrototype);
 
-      if (prototype == null)
+      if (icePrototype == null)
         throw new Error(`Can't add operation '${opName}. Not a servant class'`);
     }
 
     // operation table containing defined operation
-    const opTable = getOpTable(prototype.constructor, opName);
+    const opTable = getOpTable(icePrototype.constructor, opName);
 
     if (opTable == null)
-      throw new Error(`No operation ${opName} in type '${prototype.ice_id()}'`);
+      throw new Error(`No operation ${opName} in type ` +
+                      `'${icePrototype.ice_id()}'`);
 
     // copy operation config
     const opConfig = [...opTable.raw[opName]];
@@ -90,7 +92,7 @@ export default function operation(name?: string) {
     const OpTable = opTable.constructor;
 
     // top-level operation table, may be undefined
-    const servantOpTable = (prototype.constructor as any).__ops;
+    const servantOpTable = (icePrototype.constructor as any).__ops;
 
     // override operation table
     const newOpTable = new OpTable(Object.assign(
@@ -98,11 +100,12 @@ export default function operation(name?: string) {
         [opName]: opConfig,
       })
     );
-    (prototype.constructor as any).__ops = newOpTable;
+    (icePrototype.constructor as any).__ops = newOpTable;
 
     // add AMD method
-    Object.assign(prototype, {
-      [`${opName}_async`](cb: Ice.UpcallRest, ...args: any[]) {
+    Object.defineProperty(prototype, `${opName}_async`, {
+      ...descriptor,
+      value(cb: Ice.UpcallRest, ...args: any[]) {
         Promise.resolve(descriptor.value.call(this, ...args)).then(
           res => {
             if (res === undefined) {
