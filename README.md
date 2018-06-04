@@ -1,6 +1,6 @@
 # Ice Utils [![npm version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]
 
-A set of utilities that makes using ZeroC ICE with JS easier.
+A set of utilities that makes using ZeroC ICE 3.6 with JS easier.
 
 ## Installation
 
